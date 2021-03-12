@@ -16,14 +16,42 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+
+
+    const task = {
+      id:Math.random(),
+      title: newTaskTitle,
+      isComplete: false
+    }
+    if(!task.title){
+      return alert('Título não pode estar vázio')
+    }
+
+    setTasks([...tasks, task])
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+
+    const taskIndex = tasks.findIndex(task=> task.id === id)
+ 
+    const updatedTask = Object.assign(tasks[taskIndex],{
+      isComplete: true
+    })
+
+    tasks[taskIndex]=updatedTask
+    
+
+    setTasks([...tasks])
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+    const taskIndex = tasks.findIndex(task=> task.id === id)
+
+    tasks.splice(taskIndex, 1)
+
+    setTasks([...tasks])
   }
 
   return (
@@ -38,7 +66,7 @@ export function TaskList() {
             onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
-          <button type="submit" data-testid="add-task-button" onClick={handleCreateNewTask}>
+          <button type="button" data-testid="add-task-button" onClick={handleCreateNewTask}>
             <FiCheckSquare size={16} color="#fff"/>
           </button>
         </div>
